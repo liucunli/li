@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        img{
+            width: 200px;
+        }
+        .box{
+            width: 1160px;
+            position: relative;
+            margin: 0px auto;
+        }
+        .img_box{
+            width: 200px;
+            padding: 10px;
+            border: 2px solid wheat;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="img_box">
+            <img src="img/pic1.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic2.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic3.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic4.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic5.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic6.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic7.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic8.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic9.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic10.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic1.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic2.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic3.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic4.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic5.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic6.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic7.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic8.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic9.png">
+        </div>
+        <div class="img_box">
+            <img src="img/pic10.png">
+        </div>
+    </div>
+</body>
+<script>
+    //1、获取容器的宽，
+    let box = document.getElementsByClassName('box')[0];
+    boxW = box.offsetWidth;
+    let img_box = document.getElementsByClassName('img_box');
+    img_boxW = img_box[0].offsetWidth;
+    //2、得到列数
+    let cols = Math.round(boxW/img_boxW);
+    //3、设置列之间的间隔
+    let space = 10;
+    //4、定义一个容器，存储每一列的高度
+    let arr = new Array(5)
+    //5、设置图片的定位
+    setPosition();
+    //6、下拉到底部时，加载数据
+    window.onscroll = function () {
+        if((window.pageYOffset+window.innerHeight)>getMinValue(arr).value){
+            console.log('s')
+            let json = [
+                {"src":"img/pic1.png"},
+                {"src":"img/pic2.png"},
+                {"src":"img/pic3.png"},
+                {"src":"img/pic4.png"},
+                {"src":"img/pic5.png"},
+                {"src":"img/pic6.png"},
+                {"src":"img/pic7.png"},
+                {"src":"img/pic8.png"},
+                {"src":"img/pic9.png"},
+               { "src":"img/pic10.png"}
+            ]
+            console.log(json.length)
+            for(let i=0;i<json.length;i++){
+                console.log('xx')
+                let div = document.createElement('div');
+                div.className = "img_box";
+                let img = document.createElement('img');
+                img.src = json[i].src;
+                div.appendChild(img);
+                box.appendChild(div);
+            }
+            setPosition();
+        }
+    }
+
+    function setPosition() {
+        for(let i=0;i<img_box.length;i++){
+            if(i<cols){
+                img_box[i].style.left = (img_boxW + space)*i + 'px';
+                arr[i] = img_box[i].offsetHeight;
+            }
+            else{
+                let min = getMinValue(arr);
+                img_box[i].style.left = (img_boxW+space)*min.index + 'px';
+                img_box[i].style.top = (min.value + space) + 'px';
+                arr[min.index] += img_box[i].offsetHeight+space;
+            }
+        }
+    }
+    function getMinValue(arr) {
+        let min = {}
+        min.index = 0;
+        min.value = arr[0];
+        for(let i=1;i<arr.length;i++){
+            if(min.value>arr[i]){
+                min.index = i;
+                min.value = arr[i];
+            }
+        }
+        return min;
+    }
+</script>
+</html>
